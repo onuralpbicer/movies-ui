@@ -1,16 +1,21 @@
+import Scroller from '../../shared/Scroller/Scroller'
 import { useDiscover } from '../util'
 
 const DiscoverMovies: React.FC = () => {
 	const listQuery = useDiscover('movie')
 
 	const list = listQuery.data ?? []
-	console.log(list.length)
+	console.log(list)
 	return (
-		<section>
+		<section style={{ overflow: 'hidden' }}>
 			<h1>Discover Movies</h1>
-			{listQuery.isLoading
-				? 'loading'
-				: list.map((item) => <div key={item.id}>{item.title}</div>)}
+			{listQuery.isLoading ? (
+				'loading'
+			) : (
+				<>
+					<Scroller list={list} getName={(item) => item.title} />
+				</>
+			)}
 		</section>
 	)
 }

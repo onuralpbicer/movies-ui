@@ -27,7 +27,7 @@ async function getDiscoverList<T>(type: MediaType): Promise<T> {
 	} else throw new Error('Unsupported Content-Type header')
 }
 
-interface DiscoverItemResponse {
+export interface DiscoverItemResponse {
 	id: number
 	genre_ids: number[]
 	original_language: string
