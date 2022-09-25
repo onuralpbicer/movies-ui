@@ -1,17 +1,13 @@
-import { useQuery } from '@tanstack/react-query'
+import { useQuery, UseQueryResult } from '@tanstack/react-query'
 import { toast } from 'react-toastify'
 
-export type MediaType = 'movies' | 'shows'
+export type MediaType = 'movie' | 'tv'
 
 const api_key = 'de3e345d787759aafb69a48a4192ef5e'
 
-function isError(error: unknown): error is Error {
-	return error instanceof Error
-}
-
 async function getDiscoverList<T>(type: MediaType): Promise<T> {
 	const baseURL = 'https://api.themoviedb.org'
-	const path = '/3/discover/movie'
+	const path = `/3/discover/${type}`
 
 	const url = new URL(path, baseURL)
 	url.searchParams.append('api_key', api_key)
@@ -32,33 +28,52 @@ async function getDiscoverList<T>(type: MediaType): Promise<T> {
 }
 
 interface DiscoverItemResponse {
-	adult: boolean
-	backdrop_path: string
-	genre_ids: number[]
 	id: number
+	genre_ids: number[]
 	original_language: string
-	original_title: string
 	overview: string
 	popularity: number
 	poster_path: string
-	release_date: string
-	title: string
-	video: boolean
 	vote_average: number
 	vote_count: number
 }
 
-interface DiscoverResponse {
+interface DiscoverItemTVResponse extends DiscoverItemResponse {
+	backdrop_path: string
+	first_air_date: string
+	name: string
+	origin_country: string[]
+	original_name: string
+}
+
+interface DiscoverItemMovieResponse extends DiscoverItemResponse {
+	adult: boolean
+	backdrop_path: string
+	id: number
+	original_title: string
+	release_date: string
+	title: string
+	video: boolean
+}
+
+interface DiscoverResponse<T> {
 	page: number
 	total_pages: number
 	total_results: number
-	results: DiscoverItemResponse[]
+	results: T[]
 }
 
-export function useDiscover(type: MediaType) {
+export function useDiscover<T extends MediaType>(type: T) {
+	const queryFn = () =>
+		getDiscoverList<
+			DiscoverResponse<
+				T extends 'movie' ? DiscoverItemMovieResponse : DiscoverItemTVResponse
+			>
+		>(type)
+
 	return useQuery({
 		queryKey: ['Discover list', type],
-		queryFn: () => getDiscoverList<DiscoverResponse>(type),
+		queryFn,
 		onError: (error: Error) => {
 			console.error(error)
 			toast.error(error.message)

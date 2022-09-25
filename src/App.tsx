@@ -1,11 +1,13 @@
 import React from 'react'
 import './App.css'
-import Discover from './discover/Disover'
+import DiscoverMovies from './discover/movie/DiscoverMovies'
+import DiscoverTVShows from './discover/tv/DiscoverTV'
 
 function App() {
 	return (
 		<React.Fragment>
-			<Discover type="movies" />
+			<DiscoverMovies />
+			<DiscoverTVShows />
 		</React.Fragment>
 	)
 }
