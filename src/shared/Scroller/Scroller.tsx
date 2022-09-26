@@ -14,6 +14,23 @@ const ScrollGroupButtons = styled.div`
 	position: absolute;
 	top: 0;
 	height: 100%;
+	background-color: rgba(0, 0, 0, 0.4);
+	padding: 1rem;
+	border-radius: 0.5rem;
+`
+
+const ScrollGroupNavigationContainer = styled.div`
+	display: flex;
+	justify-content: flex-end;
+	padding: 1rem;
+	gap: 1px;
+`
+
+const ScrollGroupNavigationCrumb = styled.span`
+	height: 2px;
+	width: 1rem;
+	transition: background-color 0.2s ease-in-out;
+	cursor: pointer;
 `
 
 interface ScrollerProps<T extends DiscoverItemResponse> {
@@ -57,7 +74,18 @@ const Scroller = <T extends DiscoverItemResponse>({
 	}
 
 	return (
-		<>
+		<div>
+			<ScrollGroupNavigationContainer>
+				{pageList.map((_, index) => (
+					<ScrollGroupNavigationCrumb
+						style={{
+							backgroundColor: page === index ? 'darkgray' : 'black',
+						}}
+						key={index}
+						onClick={() => setPage(Math.min(length - 1, Math.max(0, index)))}
+					/>
+				))}
+			</ScrollGroupNavigationContainer>
 			<ScrollContainer>
 				{pageList.map((pageItems, index) => (
 					<ScrollGroup
@@ -77,7 +105,7 @@ const Scroller = <T extends DiscoverItemResponse>({
 				</ScrollGroupButtons>
 			</ScrollContainer>
 			{page}
-		</>
+		</div>
 	)
 }
 
