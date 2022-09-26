@@ -1,6 +1,6 @@
 import styled from 'styled-components'
 import { DiscoverItemResponse } from '../../discover/util'
-import { KeysOfType, PickByType } from '../util'
+import { KeysOfType } from '../util'
 
 const ScrollGroupContainer = styled.div`
 	width: 100%;
@@ -16,13 +16,8 @@ const imageBasePath = 'https://image.tmdb.org/t/p/w500'
 const ScrollGroupItem = styled.a`
 	height: 200px;
 	flex-shrink: 0;
-	width: ${({
-		numPerPage,
-	}: {
-		numPerPage: number
-		imagePath: string
-		title: string
-	}) => `calc(calc(100% - 8px * ${numPerPage}) / ${numPerPage})`};
+	width: ${({ numPerPage }: { numPerPage: number; imagePath: string }) =>
+		`calc(calc(100% - 8px * ${numPerPage}) / ${numPerPage})`};
 	position: relative;
 	overflow: hidden;
 	color: white;
@@ -31,6 +26,8 @@ const ScrollGroupItem = styled.a`
 	display: grid;
 	place-content: center;
 	opacity: 1;
+	border-radius: 0.5rem;
+	text-align: center;
 	::before {
 		content: '';
 		display: block;
@@ -48,22 +45,15 @@ const ScrollGroupItem = styled.a`
 		transform: scale(1.2);
 		filter: brightness(0.5);
 	}
-	::after {
-		content: ${({
-			title,
-		}: {
-			numPerPage: number
-			imagePath: string
-			title: string
-		}) => `'${title}'`};
-		display: grid;
-		place-content: center;
-		position: absolute;
-		top: 0;
-		left: 0;
-		height: 100%;
-		width: 100%;
-	}
+`
+
+const ScrollGroupItemInner = styled.div`
+	position: absolute;
+	height: 100%;
+	width: 100%;
+	display: grid;
+	place-content: center;
+	text-align: center;
 `
 
 interface ScrollGroupProps<T extends DiscoverItemResponse> {
@@ -84,14 +74,16 @@ const ScrollGroup = <T extends DiscoverItemResponse>({
 	return (
 		<ScrollGroupContainer curPage={curPage}>
 			{list.map((item) => {
-				console.log(item)
 				return (
 					<ScrollGroupItem
 						key={item.id}
 						numPerPage={numPerPage}
 						imagePath={item[imageKey] as string}
-						title={item[titleKey] as string}
-					></ScrollGroupItem>
+					>
+						<ScrollGroupItemInner>
+							{item[titleKey] as string}
+						</ScrollGroupItemInner>
+					</ScrollGroupItem>
 				)
 			})}
 		</ScrollGroupContainer>

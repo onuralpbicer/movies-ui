@@ -7,7 +7,7 @@ function App() {
 	return (
 		<React.Fragment>
 			<DiscoverMovies />
-			{/* <DiscoverTVShows /> */}
+			<DiscoverTVShows />
 		</React.Fragment>
 	)
 }

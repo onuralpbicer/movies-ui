@@ -104,7 +104,6 @@ const Scroller = <T extends DiscoverItemResponse>({
 					next
 				</ScrollGroupButtons>
 			</ScrollContainer>
-			{page}
 		</div>
 	)
 }
