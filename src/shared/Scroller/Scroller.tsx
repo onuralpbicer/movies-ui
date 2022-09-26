@@ -3,11 +3,16 @@ import styled from 'styled-components'
 import { DiscoverItemResponse } from '../../discover/util'
 import { KeysOfType } from '../util'
 import ScrollGroup from './ScrollerGroup'
+import ChevronLeftIcon from 'mdi-react/ChevronLeftIcon'
+import ChevronRightIcon from 'mdi-react/ChevronRightIcon'
 
 const ScrollContainer = styled.div`
 	overflow: hidden;
 	display: flex;
 	position: relative;
+	:hover > .scroller-button {
+		opacity: 1;
+	}
 `
 
 const ScrollGroupButtons = styled.div`
@@ -15,8 +20,14 @@ const ScrollGroupButtons = styled.div`
 	top: 0;
 	height: 100%;
 	background-color: rgba(0, 0, 0, 0.4);
-	padding: 1rem;
+	padding: 1rem 0.75rem;
 	border-radius: 0.5rem;
+	opacity: 0;
+	transition: opacity 0.25s ease-in-out;
+	cursor: pointer;
+	display: grid;
+	place-content: center;
+	box-sizing: border-box;
 `
 
 const ScrollGroupNavigationContainer = styled.div`
@@ -97,11 +108,19 @@ const Scroller = <T extends DiscoverItemResponse>({
 						imageKey={imageKey}
 					/>
 				))}
-				<ScrollGroupButtons style={{ left: 0 }} onClick={goPrevPage}>
-					prev
+				<ScrollGroupButtons
+					className="scroller-button"
+					style={{ left: 0 }}
+					onClick={goPrevPage}
+				>
+					<ChevronLeftIcon color="white" />
 				</ScrollGroupButtons>
-				<ScrollGroupButtons style={{ right: 0 }} onClick={goNextPage}>
-					next
+				<ScrollGroupButtons
+					className="scroller-button"
+					style={{ right: 0 }}
+					onClick={goNextPage}
+				>
+					<ChevronRightIcon color="white" />
 				</ScrollGroupButtons>
 			</ScrollContainer>
 		</div>
