@@ -13,7 +13,7 @@ const DiscoverMovies: React.FC = () => {
 				'loading'
 			) : (
 				<>
-					<Scroller list={list} getName={(item) => item.title} />
+					<Scroller list={list} imageKey="backdrop_path" titleKey="title" />
 				</>
 			)}
 		</section>

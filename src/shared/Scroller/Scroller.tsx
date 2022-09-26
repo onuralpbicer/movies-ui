@@ -1,21 +1,31 @@
 import { useEffect, useState } from 'react'
 import styled from 'styled-components'
 import { DiscoverItemResponse } from '../../discover/util'
+import { KeysOfType } from '../util'
 import ScrollGroup from './ScrollerGroup'
 
 const ScrollContainer = styled.div`
 	overflow: hidden;
 	display: flex;
+	position: relative;
+`
+
+const ScrollGroupButtons = styled.div`
+	position: absolute;
+	top: 0;
+	height: 100%;
 `
 
 interface ScrollerProps<T extends DiscoverItemResponse> {
 	list: T[]
-	getName: (item: T) => string
+	imageKey: KeysOfType<T, string>
+	titleKey: KeysOfType<T, string>
 }
 
 const Scroller = <T extends DiscoverItemResponse>({
 	list,
-	getName,
+	imageKey,
+	titleKey,
 }: ScrollerProps<T>) => {
 	const numPerPage = 3
 	const length = Math.ceil(list.length / numPerPage)
@@ -55,12 +65,17 @@ const Scroller = <T extends DiscoverItemResponse>({
 						numPerPage={numPerPage}
 						curPage={page}
 						list={pageItems}
-						getName={getName}
+						titleKey={titleKey}
+						imageKey={imageKey}
 					/>
 				))}
+				<ScrollGroupButtons style={{ left: 0 }} onClick={goPrevPage}>
+					prev
+				</ScrollGroupButtons>
+				<ScrollGroupButtons style={{ right: 0 }} onClick={goNextPage}>
+					next
+				</ScrollGroupButtons>
 			</ScrollContainer>
-			<button onClick={goPrevPage}>prev</button>
-			<button onClick={goNextPage}>next</button>
 			{page}
 		</>
 	)
