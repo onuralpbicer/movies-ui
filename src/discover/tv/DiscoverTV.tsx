@@ -6,7 +6,7 @@ const DiscoverTVShows: React.FC = () => {
 
 	const list = listQuery.data ?? []
 	return (
-		<section style={{ overflow: 'hidden' }}>
+		<section>
 			<h1>Discover TV Shows</h1>
 			{listQuery.isLoading ? (
 				'loading'
