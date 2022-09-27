@@ -22,10 +22,15 @@ const ScrollGroupContainer = styled.div`
 `
 
 const imageBasePath = 'https://image.tmdb.org/t/p/w500'
+
+const ScrollGroupImg = styled.img`
+	transition: transform 0.25s ease-in-out, filter 0.25s ease-in-out;
+`
+
 const ScrollGroupItem = styled.a`
 	height: 200px;
 	flex-shrink: 0;
-	width: ${({ numPerPage }: { numPerPage: number; imagePath: string }) =>
+	width: ${({ numPerPage }: { numPerPage: number }) =>
 		`calc(calc(100% - 8px * ${numPerPage}) / ${numPerPage})`};
 	position: relative;
 	overflow: hidden;
@@ -37,20 +42,7 @@ const ScrollGroupItem = styled.a`
 	opacity: 1;
 	border-radius: 0.5rem;
 	text-align: center;
-	::before {
-		content: '';
-		display: block;
-		background-image: ${({ imagePath }: { imagePath: string }) =>
-			`url(${imageBasePath + imagePath})`};
-		background-position: center;
-		position: absolute;
-		top: 0;
-		left: 0;
-		height: 100%;
-		width: 100%;
-		transition: transform 0.25s ease-in-out, filter 0.25s ease-in-out;
-	}
-	:hover::before {
+	:hover > ${ScrollGroupImg} {
 		transform: scale(1.2);
 		filter: brightness(0.5);
 	}
@@ -86,11 +78,11 @@ const ScrollGroup = <T extends DiscoverItemResponse>({
 		<ScrollGroupContainer curPage={curPage} touch={touch}>
 			{list.map((item) => {
 				return (
-					<ScrollGroupItem
-						key={item.id}
-						numPerPage={numPerPage}
-						imagePath={item[imageKey] as string}
-					>
+					<ScrollGroupItem key={item.id} numPerPage={numPerPage}>
+						<ScrollGroupImg
+							src={imageBasePath + item[imageKey]}
+							loading="lazy"
+						/>
 						<ScrollGroupItemInner>
 							{item[titleKey] as string}
 						</ScrollGroupItemInner>
