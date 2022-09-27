@@ -34,8 +34,11 @@ export function useThemeToggle(): [Theme, (theme: Theme) => void] {
 	const [theme, setTheme] = useState<Theme>(() => {
 		const theme = localStorage.getItem(themeKey)
 
-		if (theme === 'light' || theme === 'dark') return theme
-		else return 'default'
+		if (theme === 'light' || theme === 'dark') {
+			const el = document.querySelector(':root')
+			if (el) el.className = theme + '-theme'
+			return theme
+		} else return 'default'
 	})
 
 	const changeTheme = useCallback((theme: Theme) => {
