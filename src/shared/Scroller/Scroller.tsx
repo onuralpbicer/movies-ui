@@ -50,6 +50,7 @@ interface ScrollerProps<T extends DiscoverItemResponse> {
 	titleKey: KeysOfType<T, string>
 }
 
+const touchThreshold = 100
 const Scroller = <T extends DiscoverItemResponse>({
 	list,
 	imageKey,
@@ -84,6 +85,9 @@ const Scroller = <T extends DiscoverItemResponse>({
 		else setPage(newPage)
 	}
 
+	const [touchStart, setTouchStart] = useState<number | null>(null)
+	const [touchNow, setTouchNow] = useState<number | null>(null)
+
 	return (
 		<div>
 			<ScrollGroupNavigationContainer>
@@ -97,7 +101,35 @@ const Scroller = <T extends DiscoverItemResponse>({
 					/>
 				))}
 			</ScrollGroupNavigationContainer>
-			<ScrollContainer>
+			<ScrollContainer
+				onTouchStart={(e) => {
+					const pos = e.touches.item(0).clientX
+					setTouchStart(pos)
+				}}
+				onTouchMove={(e) => {
+					const pos = e.touches.item(0).clientX
+					if (touchStart) {
+						const diff = touchStart - pos
+						if (Math.abs(diff) > touchThreshold) {
+							if (diff > 0) goNextPage()
+							else goPrevPage()
+							//
+							setTouchNow(null)
+							setTouchStart(null)
+						} else {
+							setTouchNow(pos)
+						}
+					}
+				}}
+				onTouchEnd={(e) => {
+					setTouchStart(null)
+					setTouchNow(null)
+				}}
+				onTouchCancel={() => {
+					setTouchStart(null)
+					setTouchNow(null)
+				}}
+			>
 				{pageList.map((pageItems, index) => (
 					<ScrollGroup
 						key={index}
@@ -106,6 +138,7 @@ const Scroller = <T extends DiscoverItemResponse>({
 						list={pageItems}
 						titleKey={titleKey}
 						imageKey={imageKey}
+						touch={touchStart && touchNow && touchStart - touchNow}
 					/>
 				))}
 				<ScrollGroupButtons

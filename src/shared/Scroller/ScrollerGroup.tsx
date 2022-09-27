@@ -2,13 +2,22 @@ import styled from 'styled-components'
 import { DiscoverItemResponse } from '../../discover/util'
 import { KeysOfType } from '../util'
 
+const touchOffset = 2000
 const ScrollGroupContainer = styled.div`
 	width: 100%;
 	flex-shrink: 0;
 	display: flex;
 	gap: 0.5rem;
-	transform: ${({ curPage }: { curPage: number }) =>
-		`translateX(calc(-${curPage}00% - calc(${0} * 8px)))`};
+	transform: ${({
+		curPage,
+		touch,
+	}: {
+		curPage: number
+		touch: number | null
+	}) =>
+		`translateX(calc(-${curPage}00% - calc(${0} * 8px) - ${
+			touch ? (touch > 0 ? touch + touchOffset : touch - touchOffset) : 0
+		}px))`};
 	transition: transform 0.75s ease-in-out;
 `
 
@@ -62,6 +71,7 @@ interface ScrollGroupProps<T extends DiscoverItemResponse> {
 	list: T[]
 	titleKey: KeysOfType<T, string>
 	imageKey: KeysOfType<T, string>
+	touch: number | null
 }
 
 const ScrollGroup = <T extends DiscoverItemResponse>({
@@ -70,9 +80,10 @@ const ScrollGroup = <T extends DiscoverItemResponse>({
 	list,
 	titleKey,
 	imageKey,
+	touch,
 }: ScrollGroupProps<T>) => {
 	return (
-		<ScrollGroupContainer curPage={curPage}>
+		<ScrollGroupContainer curPage={curPage} touch={touch}>
 			{list.map((item) => {
 				return (
 					<ScrollGroupItem
