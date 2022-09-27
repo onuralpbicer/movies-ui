@@ -1,0 +1,31 @@
+:root {
+	--main-bg-color: white;
+	--main-text-color: black;
+}
+
+@media (prefers-color-scheme: dark) {
+	:root {
+		--main-bg-color: #353535;
+		--main-text-color: rgb(209, 209, 209);
+	}
+}
+
+.light-theme {
+	--main-bg-color: white;
+	--main-text-color: black;
+}
+
+.dark-theme {
+	--main-bg-color: #353535;
+	--main-text-color: rgb(209, 209, 209);
+}
+
+body {
+	height: 100vh;
+	background-color: var(--main-bg-color);
+	color: var(--main-text-color);
+}
+
+body {
+	transition: color 0.25s ease-in-out, background-color 0.25s ease-in-out;
+}

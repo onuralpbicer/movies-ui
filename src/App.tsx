@@ -1,14 +1,16 @@
-import React from 'react'
 import './App.css'
 import DiscoverMovies from './discover/movie/DiscoverMovies'
 import DiscoverTVShows from './discover/tv/DiscoverTV'
+import Theme from './shared/theme/Theme'
+import ThemeToggle from './shared/theme/ThemeToggle'
 
 function App() {
 	return (
-		<React.Fragment>
+		<Theme>
+			<ThemeToggle />
 			<DiscoverMovies />
 			<DiscoverTVShows />
-		</React.Fragment>
+		</Theme>
 	)
 }
 
