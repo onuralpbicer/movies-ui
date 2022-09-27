@@ -1,23 +1,31 @@
 :root {
 	--main-bg-color: white;
 	--main-text-color: black;
+	--header-bg-color: #f3f3f3;
+	--header-underline-color: lightgray;
 }
 
 @media (prefers-color-scheme: dark) {
 	:root {
 		--main-bg-color: #353535;
 		--main-text-color: rgb(209, 209, 209);
+		--header-bg-color: #4c4c4c;
+		--header-underline-color: gray;
 	}
 }
 
 .light-theme {
 	--main-bg-color: white;
 	--main-text-color: black;
+	--header-bg-color: #f3f3f3;
+	--header-underline-color: lightgray;
 }
 
 .dark-theme {
 	--main-bg-color: #353535;
 	--main-text-color: rgb(209, 209, 209);
+	--header-bg-color: #4c4c4c;
+	--header-underline-color: gray;
 }
 
 body {
