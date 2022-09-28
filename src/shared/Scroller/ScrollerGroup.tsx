@@ -42,6 +42,8 @@ const ScrollGroupItem = styled.a`
 	opacity: 1;
 	border-radius: 0.5rem;
 	text-align: center;
+	background-color: var(--header-bg-color);
+	user-select: none;
 	:hover > ${ScrollGroupImg} {
 		transform: scale(1.2);
 		filter: brightness(0.5);
