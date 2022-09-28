@@ -50,13 +50,31 @@ interface ScrollerProps<T extends DiscoverItemResponse> {
 	titleKey: KeysOfType<T, string>
 }
 
+const mediaQuery =
+	matchMedia && matchMedia('only screen and (max-width: 768px)')
+
 const touchThreshold = 100
 const Scroller = <T extends DiscoverItemResponse>({
 	list,
 	imageKey,
 	titleKey,
 }: ScrollerProps<T>) => {
-	const numPerPage = 3
+	const [numPerPage, setNumPerPage] = useState(() => {
+		if (mediaQuery.matches) return 3
+		return 5
+	})
+
+	useEffect(() => {
+		function handleChange(event: MediaQueryListEvent) {
+			setNumPerPage(event.matches ? 3 : 5)
+		}
+
+		mediaQuery.addEventListener('change', handleChange)
+		return () => {
+			mediaQuery.removeEventListener('change', handleChange)
+		}
+	}, [])
+
 	const length = Math.ceil(list.length / numPerPage)
 
 	const pageList = list.reduce(
